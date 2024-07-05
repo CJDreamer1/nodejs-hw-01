@@ -35,7 +35,7 @@ const generateContacts = async (number) => {
     }
 
     // Запис оновленого масиву контактів назад у файл
-    await fs.appendFile(PATH_DB, JSON.stringify(contacts, null, 2));
+    await fs.writeFile(PATH_DB, JSON.stringify(contacts, null, 2));
 
     console.log(`Added ${number} new contacts.`);
   } catch (error) {
