@@ -1,17 +1,17 @@
+import * as fs from 'node:fs/promises';
 import { PATH_DB } from '../constants/contacts.js';
-import addOneContact from '../utils/createFakeContact.js';
+import { createFakeContact } from '../utils/createFakeContact.js';
 
-export const addOneContact = async (number) => {
-  try {
-  } catch (error) {}
+export const addOneContact = async () => {
+  await fs
+    .readFile(PATH_DB, 'utf8')
+    .then((data) => [...JSON.parse(data), createFakeContact()]) //тому тут парсимо JSON - і тепер це буде масивом а масив можна пушити
+    .then((data) => fs.writeFile(PATH_DB, JSON.stringify(data, null, 2)))
+    .catch((error) => console.error(error));
 };
 
 addOneContact();
 //спочатку читаємо базу (вона прийде у формаі string(json))
-fs.readFile('db.json', 'utf8')
-  .then((data) => [...JSON.parse(data), { id: 3, name: 'Tolya' }]) //тому тут парсимо JSON - і тепер це буде масивом а масив можна пушити
-  .then((data) => fs.writeFile('db.json', JSON.stringify(data, undefined, 2)))
-  .catch((error) => console.error(error));
 
 //алгоритм наступний:
 // 1) зчитуємо базу даних(fs.readFile('db.json', 'utf8'))
